@@ -10,9 +10,9 @@ export interface AuthState {
 }
 
 /**
- * Dados necessários para login.
+ * Dados necessários para login e cadastro.
  */
-export interface LoginCredentials {
+export interface AuthCredentials {
   email: string;
   password: string;
 }
