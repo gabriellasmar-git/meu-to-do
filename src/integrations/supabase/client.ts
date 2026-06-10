@@ -38,6 +38,7 @@ const authCallbacks: Array<(event: string, session: any) => void> = [];
 /**
  * Cliente local que imita exatamente a API do Supabase Client,
  * armazenando dados diretamente no localStorage do navegador para máxima portabilidade.
+ * Atualizado para suportar metadados de perfil (user_metadata) como nome completo.
  */
 export const supabase = {
   auth: {
@@ -57,7 +58,7 @@ export const supabase = {
         error: null,
       };
     },
-    signUp: async ({ email, password }: any) => {
+    signUp: async ({ email, password, options }: any) => {
       const users = getLocalData("todo_registered_users");
       const userExists = users.some((u: any) => u.email === email);
 
@@ -69,6 +70,7 @@ export const supabase = {
         id: generateUUID(),
         email,
         created_at: new Date().toISOString(),
+        user_metadata: options?.data || {},
       };
 
       users.push({ ...newUser, password });
@@ -87,7 +89,11 @@ export const supabase = {
         return { data: null, error: { message: "E-mail ou senha incorretos." } };
       }
 
-      const sessionUser = { id: user.id, email: user.email };
+      const sessionUser = { 
+        id: user.id, 
+        email: user.email,
+        user_metadata: user.user_metadata || {} 
+      };
       setActiveSessionUser(sessionUser);
 
       // Dispara os listeners de mudança de autenticação

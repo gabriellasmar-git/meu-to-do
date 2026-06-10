@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/integrations/supabase/client';
-import { AuthState, AuthCredentials } from '../auth.types';
+import { AuthState, AuthCredentials, RegisterCredentials } from '../auth.types';
 import { toast } from 'sonner';
 
 /**
@@ -51,13 +51,21 @@ export function useAuth() {
     router.push('/');
   };
 
-  const register = async ({ email, password }: AuthCredentials) => {
-    const { error } = await supabase.auth.signUp({ email, password });
+  const register = async ({ email, password, fullName }: RegisterCredentials) => {
+    const { error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        data: {
+          full_name: fullName
+        }
+      }
+    });
     if (error) {
       toast.error(`Erro ao cadastrar: ${error.message}`);
       throw error;
     }
-    toast.success("Cadastro realizado! Verifique seu e-mail.");
+    toast.success("Cadastro realizado com sucesso! Faça login para começar.");
     router.push('/login');
   };
 
