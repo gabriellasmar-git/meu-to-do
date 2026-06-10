@@ -18,7 +18,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 /**
- * Componente de formulário para autenticação, agora atualizado com ícones inline alinhados e espaçamento pl-10.
+ * Componente de formulário para autenticação, com ícones no canto direito (right-4) para evitar conflito de digitação.
  */
 export const LoginForm = () => {
   const { login } = useAuth();
@@ -47,13 +47,13 @@ export const LoginForm = () => {
               <FormLabel className="text-slate-700 font-medium">E-mail</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Mail className="absolute left-3 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                   <Input 
                     type="email"
                     placeholder="seu@email.com" 
-                    className="pl-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
+                    className="pr-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
                     {...field} 
                   />
+                  <Mail className="absolute right-4 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                 </div>
               </FormControl>
               <FormMessage className="text-xs" />
@@ -70,13 +70,13 @@ export const LoginForm = () => {
               <FormLabel className="text-slate-700 font-medium">Senha</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Lock className="absolute left-3 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                   <Input 
                     type="password" 
                     placeholder="******" 
-                    className="pl-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
+                    className="pr-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
                     {...field} 
                   />
+                  <Lock className="absolute right-4 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                 </div>
               </FormControl>
               <FormMessage className="text-xs" />

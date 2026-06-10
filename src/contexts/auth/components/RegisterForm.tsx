@@ -26,7 +26,7 @@ const registerSchema = z.object({
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 /**
- * Componente do formulário de cadastro com espaçamento correto pl-10 para evitar sobreposição de texto nos ícones.
+ * Componente do formulário de cadastro com ícones no canto direito (right-4) para evitar conflitos de preenchimento.
  */
 export const RegisterForm = () => {
   const { register } = useAuth();
@@ -59,12 +59,12 @@ export const RegisterForm = () => {
               <FormLabel className="text-slate-700 font-medium">Nome Completo</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <User className="absolute left-3 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                   <Input 
                     placeholder="Seu nome" 
-                    className="pl-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
+                    className="pr-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
                     {...field} 
                   />
+                  <User className="absolute right-4 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                 </div>
               </FormControl>
               <FormMessage className="text-xs" />
@@ -81,13 +81,13 @@ export const RegisterForm = () => {
               <FormLabel className="text-slate-700 font-medium">E-mail</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Mail className="absolute left-3 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                   <Input 
                     type="email"
                     placeholder="exemplo@email.com" 
-                    className="pl-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
+                    className="pr-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
                     {...field} 
                   />
+                  <Mail className="absolute right-4 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                 </div>
               </FormControl>
               <FormMessage className="text-xs" />
@@ -104,13 +104,13 @@ export const RegisterForm = () => {
               <FormLabel className="text-slate-700 font-medium">Senha</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Lock className="absolute left-3 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                   <Input 
                     type="password" 
                     placeholder="Mínimo 6 caracteres" 
-                    className="pl-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
+                    className="pr-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
                     {...field} 
                   />
+                  <Lock className="absolute right-4 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                 </div>
               </FormControl>
               <FormMessage className="text-xs" />
@@ -127,13 +127,13 @@ export const RegisterForm = () => {
               <FormLabel className="text-slate-700 font-medium">Confirmar Senha</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Lock className="absolute left-3 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                   <Input 
                     type="password" 
                     placeholder="Repita sua senha" 
-                    className="pl-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
+                    className="pr-10 h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-lg transition-all w-full" 
                     {...field} 
                   />
+                  <Lock className="absolute right-4 text-slate-400 h-5 w-5 pointer-events-none z-10" />
                 </div>
               </FormControl>
               <FormMessage className="text-xs" />
