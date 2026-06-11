@@ -33,62 +33,11 @@ const setActiveSessionUser = (user: any) => {
   }
 };
 
-// Semeia dados padrão no localStorage caso estejam vazios
-if (typeof window !== "undefined") {
-  const demoUserId = "demo-user-id-123";
-  
-  // 1. Semeia usuários cadastrados
-  const registeredUsers = getLocalData("todo_registered_users");
-  if (registeredUsers.length === 0) {
-    registeredUsers.push({
-      id: demoUserId,
-      email: "demo@todo.com",
-      password: "password123",
-      created_at: new Date().toISOString(),
-      user_metadata: {
-        full_name: "Usuário Demo"
-      }
-    });
-    setLocalData("todo_registered_users", registeredUsers);
-  }
-
-  // 2. Semeia tarefas de exemplo para o usuário Demo
-  const todosKey = "todo_table_todos";
-  const existingTodos = getLocalData(todosKey);
-  if (existingTodos.length === 0) {
-    const demoTodos = [
-      {
-        id: "todo-demo-1",
-        created_at: new Date(Date.now() - 60000 * 5).toISOString(), // 5 min atrás
-        title: "Experimentar adicionar uma nova tarefa acima ⚡",
-        is_completed: false,
-        user_id: demoUserId
-      },
-      {
-        id: "todo-demo-2",
-        created_at: new Date(Date.now() - 60000 * 10).toISOString(), // 10 min atrás
-        title: "Marcar esta tarefa como concluída",
-        is_completed: true,
-        user_id: demoUserId
-      },
-      {
-        id: "todo-demo-3",
-        created_at: new Date(Date.now() - 60000 * 15).toISOString(), // 15 min atrás
-        title: "Explorar o design moderno e responsivo do Meu To Do",
-        is_completed: false,
-        user_id: demoUserId
-      }
-    ];
-    setLocalData(todosKey, demoTodos);
-  }
-}
-
 const authCallbacks: Array<(event: string, session: any) => void> = [];
 
 /**
  * Cliente local que imita exatamente a API do Supabase Client,
- * armazenando dados diretamente no localStorage do navegador para máxima portabilidade.
- * Atualizado para suportar metadados de perfil (user_metadata) como nome completo.
+ * armazenando dados diretamente no localStorage do navegador de forma limpa e sem dados mocados.
  */
 export const supabase = {
   auth: {
@@ -205,7 +154,6 @@ export const supabase = {
           },
         };
 
-        // Permite chamar .order() encadeado
         return {
           ...queryResult,
           order: queryResult.order,
