@@ -7,7 +7,7 @@ import { useAuth } from "../hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import { Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 const loginSchema = z.object({
@@ -19,6 +19,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 /**
  * Componente de formulário para autenticação, com ícones no canto direito (right-4) para evitar conflito de digitação.
+ * Inclui agora um botão para acesso rápido com a conta de demonstração (Demo).
  */
 export const LoginForm = () => {
   const { login } = useAuth();
@@ -32,6 +33,16 @@ export const LoginForm = () => {
       await login(data);
     } catch (error) {
       // Erro tratado internamente no hook
+    }
+  };
+
+  const handleLoginDemo = async () => {
+    form.setValue("email", "demo@todo.com");
+    form.setValue("password", "password123");
+    try {
+      await login({ email: "demo@todo.com", password: "password123" });
+    } catch (error) {
+      // Erro tratado internamente
     }
   };
 
@@ -84,20 +95,32 @@ export const LoginForm = () => {
           )}
         />
 
-        <Button 
-          type="submit" 
-          className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-md shadow-indigo-100 transition-all flex items-center justify-center gap-2 group mt-2" 
-          disabled={form.formState.isSubmitting}
-        >
-          {form.formState.isSubmitting ? (
-            "Entrando..."
-          ) : (
-            <>
-              Entrar na conta 
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </>
-          )}
-        </Button>
+        <div className="space-y-2 pt-2">
+          <Button 
+            type="submit" 
+            className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-md shadow-indigo-100 transition-all flex items-center justify-center gap-2 group" 
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? (
+              "Entrando..."
+            ) : (
+              <>
+                Entrar na conta 
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </>
+            )}
+          </Button>
+
+          <Button 
+            type="button"
+            variant="outline"
+            onClick={handleLoginDemo}
+            className="w-full h-11 border-dashed border-indigo-200 hover:border-indigo-400 hover:bg-indigo-50/50 text-indigo-600 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+          >
+            <Sparkles className="h-4 w-4 text-indigo-500 animate-pulse" />
+            Acesso Rápido (Demo)
+          </Button>
+        </div>
 
         <div className="relative py-2">
           <div className="absolute inset-0 flex items-center">
