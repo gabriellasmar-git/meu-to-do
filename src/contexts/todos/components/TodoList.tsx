@@ -4,13 +4,15 @@ import { useState } from "react";
 import { useTodos } from "../hooks/useTodos";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Trash2, ListFilter, CheckCircle, Clock } from "lucide-react";
+import { Trash2, ListFilter, CheckCircle, Clock, Check } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 type FilterType = "all" | "active" | "completed";
 
 /**
  * Exibe a lista de tarefas filtrada por status com design otimizado.
+ * Agora com visual premium e claro para tarefas concluídas.
  */
 export const TodoList = () => {
   const { todos, isLoading, toggleTodo, deleteTodo } = useTodos();
@@ -76,43 +78,68 @@ export const TodoList = () => {
           </p>
         </div>
       ) : (
-        <div className="space-y-2.5">
-          {filteredTodos.map((todo) => (
-            <div
-              key={todo.id}
-              className="flex items-center justify-between p-4 border rounded-xl bg-white hover:bg-slate-50/50 hover:shadow-sm transition-all border-slate-100 group"
-            >
-              <div className="flex items-center gap-3.5 flex-1 min-w-0">
-                <Checkbox
-                  checked={todo.is_completed}
-                  onCheckedChange={() =>
-                    toggleTodo.mutate({ id: todo.id, is_completed: todo.is_completed })
-                  }
-                  className="rounded-md border-slate-300 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 transition-colors"
-                />
-                <span
-                  onClick={() =>
-                    toggleTodo.mutate({ id: todo.id, is_completed: todo.is_completed })
-                  }
-                  className={`text-sm font-medium truncate flex-1 transition-all cursor-pointer select-none ${
-                    todo.is_completed
-                      ? "line-through text-slate-400 decoration-slate-300"
-                      : "text-slate-700"
-                  }`}
-                >
-                  {todo.title}
-                </span>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg h-8 w-8 transition-colors shrink-0"
-                onClick={() => deleteTodo.mutate(todo.id)}
+        <div className="space-y-3">
+          {filteredTodos.map((todo) => {
+            const isCompleted = todo.is_completed;
+            return (
+              <div
+                key={todo.id}
+                className={cn(
+                  "flex items-center justify-between p-4 border rounded-2xl bg-white transition-all duration-200 group hover:shadow-md",
+                  isCompleted
+                    ? "border-emerald-100 bg-emerald-50/10"
+                    : "border-slate-100 hover:border-indigo-100"
+                )}
               >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
+                <div className="flex items-center gap-3.5 flex-1 min-w-0">
+                  <Checkbox
+                    checked={isCompleted}
+                    onCheckedChange={() =>
+                      toggleTodo.mutate({ id: todo.id, is_completed: isCompleted })
+                    }
+                    className={cn(
+                      "rounded-full h-5 w-5 border-slate-300 transition-all",
+                      isCompleted
+                        ? "border-emerald-500 bg-emerald-500 text-white data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500"
+                        : "hover:border-indigo-500"
+                    )}
+                  />
+                  
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    {isCompleted && (
+                      <Check className="h-4 w-4 text-emerald-600 shrink-0 stroke-[3px]" />
+                    )}
+                    <span
+                      onClick={() =>
+                        toggleTodo.mutate({ id: todo.id, is_completed: isCompleted })
+                      }
+                      className={cn(
+                        "text-sm font-semibold truncate cursor-pointer select-none transition-colors",
+                        isCompleted ? "text-slate-600" : "text-slate-800"
+                      )}
+                    >
+                      {todo.title}
+                    </span>
+                  </div>
+
+                  {isCompleted && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 shrink-0">
+                      Concluída
+                    </span>
+                  )}
+                </div>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl h-9 w-9 transition-colors shrink-0 ml-2"
+                  onClick={() => deleteTodo.mutate(todo.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
