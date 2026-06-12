@@ -3,16 +3,18 @@
 import { useAuth } from "@/contexts/auth/hooks/useAuth";
 import { AddTodoForm } from "@/contexts/todos/components/AddTodoForm";
 import { TodoList } from "@/contexts/todos/components/TodoList";
+import { useTodos } from "@/contexts/todos/hooks/useTodos";
 import { Button } from "@/components/ui/button";
-import { LogOut, CheckCircle2 } from "lucide-react";
+import { LogOut, CheckCircle2, Sparkles } from "lucide-react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 /**
- * Página principal protegida. Exibe a lista de tarefas do usuário.
+ * Página principal protegida. Exibe a lista de tarefas do usuário com progresso em tempo real.
  */
 export default function HomePage() {
   const { user, isLoading, logout, isAuthenticated } = useAuth();
+  const { todos } = useTodos();
   const router = useRouter();
 
   useEffect(() => {
@@ -32,7 +34,11 @@ export default function HomePage() {
     );
   }
 
-  // Pega as iniciais do nome do usuário para criar um avatar customizado
+  // Estatísticas de progresso
+  const totalTodos = todos?.length || 0;
+  const completedTodos = todos?.filter((t) => t.is_completed).length || 0;
+  const progressPercentage = totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0;
+
   const userFullName = user?.user_metadata?.full_name || "";
   const userInitials = userFullName
     ? userFullName.split(" ").slice(0, 2).map((n: string) => n[0]).join("").toUpperCase()
@@ -50,7 +56,6 @@ export default function HomePage() {
           </div>
           
           <div className="flex items-center gap-3">
-            {/* Perfil e Boas-Vindas */}
             <div className="flex items-center gap-2.5 bg-slate-50 pl-2.5 pr-1.5 py-1 rounded-full border border-slate-100 transition-all hover:bg-slate-100">
               <span className="text-xs font-semibold text-slate-700 hidden sm:inline max-w-[120px] truncate">
                 {userFullName || user?.email}
@@ -74,16 +79,39 @@ export default function HomePage() {
       </header>
 
       <main className="container max-w-2xl mx-auto px-4 py-8 space-y-8">
-        {/* Banner de boas-vindas */}
+        {/* Banner de boas-vindas com progresso interativo */}
         <div className="bg-gradient-to-tr from-indigo-700 via-indigo-600 to-violet-600 text-white p-6 rounded-2xl shadow-xl shadow-indigo-100 border border-indigo-100 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -mr-10 -mt-10" />
-          <div className="relative z-10 space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">
-              Olá, {userFullName.split(" ")[0] || "Usuário"}!
-            </h1>
-            <p className="text-indigo-100 text-sm">
-              Que bom ver você hoje. Pronto para riscar mais alguns itens da sua lista?
-            </p>
+          <div className="relative z-10 space-y-4">
+            <div className="space-y-1">
+              <h1 className="text-2xl font-bold tracking-tight">
+                Olá, {userFullName.split(" ")[0] || "Usuário"}!
+              </h1>
+              <p className="text-indigo-100 text-sm">
+                Que bom ver você hoje. Pronto para riscar mais alguns itens da sua lista?
+              </p>
+            </div>
+
+            {totalTodos > 0 && (
+              <div className="space-y-2 pt-2 border-t border-white/10">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="flex items-center gap-1 font-medium text-indigo-100">
+                    <Sparkles className="h-3.5 w-3.5 text-yellow-300 fill-yellow-300" />
+                    Progresso de hoje
+                  </span>
+                  <span className="font-bold">{progressPercentage}% concluído</span>
+                </div>
+                <div className="h-2 w-full bg-white/20 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-emerald-400 rounded-full transition-all duration-500 ease-out" 
+                    style={{ width: `${progressPercentage}%` }}
+                  />
+                </div>
+                <p className="text-[11px] text-indigo-200">
+                  {completedTodos} de {totalTodos} tarefas finalizadas
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -93,7 +121,7 @@ export default function HomePage() {
           <AddTodoForm />
         </section>
 
-        {/* Card de Minha Lista com espaçamento adicional acima */}
+        {/* Card de Minha Lista */}
         <section className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mt-4">
           <div className="flex items-center justify-between mb-4 border-b border-slate-50 pb-3">
             <h2 className="text-xl font-bold tracking-tight text-slate-800">Minha Lista</h2>
