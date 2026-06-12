@@ -1,6 +1,3 @@
-/**
- * Tipo local representando o usuário autenticado do Supabase para evitar conflito de importação.
- */
 export interface AuthUser {
   id: string;
   email?: string;
