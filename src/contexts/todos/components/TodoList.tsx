@@ -122,12 +122,10 @@ export const TodoList = () => {
                     </span>
                   </div>
 
-                  {/* Badge de status premium e moderno (Estilo GitHub / Linear / Notion) */}
+                  {/* Badge de status premium e moderno [ 🟢 Concluída ] */}
                   {isCompleted && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-100/80 shrink-0 select-none shadow-sm shadow-emerald-100/30">
-                      <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm shrink-0">
-                        <Check className="h-2 w-2 stroke-[4.5px]" />
-                      </span>
+                    <div className="bg-green-50 border border-green-200 text-green-700 rounded-full px-3 py-1 inline-flex items-center gap-2 text-xs font-semibold select-none shrink-0">
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" />
                       <span>Concluída</span>
                     </div>
                   )}
