@@ -124,10 +124,10 @@ export const TodoList = () => {
 
                   {/* Badge de status das tarefas concluídas com bolinha e texto */}
                   {isCompleted && (
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-green-50 border border-green-200 text-green-700 shrink-0 select-none">
-                      <span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" />
-                      <span>Concluída</span>
-                    </div>
+                    <span className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1 text-sm font-semibold text-green-700 shrink-0 select-none">
+                      <span className="h-2.5 w-2.5 rounded-full bg-green-500" />
+                      Concluída
+                    </span>
                   )}
                 </div>
 
